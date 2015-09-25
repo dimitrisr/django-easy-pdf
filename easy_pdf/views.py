@@ -3,6 +3,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
+from os.path import join, normpath
 
 from django.conf import settings
 from django.views.generic.base import TemplateResponseMixin, ContextMixin, View
