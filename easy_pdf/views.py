@@ -4,6 +4,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import copy
 
+from django.conf import settings
 from django.views.generic.base import TemplateResponseMixin, ContextMixin, View
 
 from .rendering import render_to_pdf_response
@@ -51,13 +52,29 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
         :returns: Django HTTP response
         :rtype: :class:`django.http.HttpResponse`
         """
-        return render_to_pdf_response(
+        # get specified filename
+        pdf_file = context.get('pdf_filename')
+        
+        if context.get('download') == True:
+            pdf_filename = pdf_file
+        else:
+            pdf_filename = None
+        
+        data = render_to_pdf_response(
             request=self.request,
             template=self.get_template_names(),
             context=context,
-            filename=self.get_pdf_filename(),
+            filename=pdf_filename, #self.get_pdf_filename(),
             **self.get_pdf_kwargs()
         )
+        
+        # create pdf file
+        pdf_root = normpath(join(settings.MEDIA_ROOT, 'reports-pdf', pdf_file))
+        fsock = open(pdf_root,'w')
+        fsock.write(str(data))
+        fsock.close
+        
+        return data
 
     def render_to_response(self, context, **response_kwargs):
         return self.get_pdf_response(context, **response_kwargs)
