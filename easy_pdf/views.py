@@ -70,10 +70,11 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
         )
         
         # create pdf file
-        pdf_root = normpath(join(settings.MEDIA_ROOT, 'reports-pdf', pdf_file))
-        fsock = open(pdf_root,'w')
-        fsock.write(str(data))
-        fsock.close
+        if pdf_file:
+            pdf_root = normpath(join(settings.MEDIA_ROOT, 'reports-pdf', pdf_file))
+            fsock = open(pdf_root,'w')
+            fsock.write(str(data))
+            fsock.close
         
         return data
 
