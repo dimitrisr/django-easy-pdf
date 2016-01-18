@@ -40,7 +40,7 @@ def fetch_resources(uri, rel):
 
     if not os.path.isfile(path):
         raise UnsupportedMediaPathException(
-            "media urls must start with {} or {}".format(
+            "path: {} Media urls must start with {} or {}".format(path,
                 settings.MEDIA_ROOT, settings.STATIC_ROOT
             )
         )
