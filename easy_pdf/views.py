@@ -55,6 +55,7 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
         """
         # get specified filename
         pdf_file = context.get('pdf_filename')
+        pdf_root = context.get('pdf_root')
         
         if context.get('download') == True:
             pdf_filename = pdf_file
@@ -71,7 +72,8 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
         
         # create pdf file
         if pdf_file:
-            pdf_root = normpath(join(settings.STATIC_ROOT, 'visit_media/reports', pdf_file))
+            if not pdf_root:
+                pdf_root = normpath(join(settings.STATIC_MEDIA, 'generated_pdf', pdf_file))
             fsock = open(pdf_root,'w')
             fsock.write(str(data))
             fsock.close
