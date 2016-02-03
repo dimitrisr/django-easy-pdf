@@ -73,7 +73,7 @@ class PDFTemplateResponseMixin(TemplateResponseMixin):
         # create pdf file
         if pdf_file:
             if not pdf_root:
-                pdf_root = normpath(join(settings.STATIC_MEDIA, 'generated_pdf', pdf_file))
+                pdf_root = normpath(join(settings.MEDIA_ROOT, 'generated_pdf', pdf_file))
             fsock = open(pdf_root,'w')
             fsock.write(str(data))
             fsock.close
